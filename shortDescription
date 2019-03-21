@@ -1,0 +1,5 @@
+O aplicatie web - probabil pe heroku - de movie application
+- aplicatie java cu framework spring folosind baza de date progresql
+- aplicatia va contine informatii depsre filme, si va avea posibilitate de a se conecta prin alte service-uri la servere
+de vizualizare filme online cum ar fi openload
+- paginile vor fi create in html, stilizate cu css si datele prelucrate cu javascript
