@@ -1,4 +1,4 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
 
@@ -19,6 +19,9 @@ public class Profile {
     @Column(name = "profile_name",length = 40,nullable = false)
     private String profileName;
 
+    @Column(name = "image",length = Integer.MAX_VALUE)
+    private byte[] image;
+
     @Column(name = "website",length = 20)
     private String website;
 
@@ -30,6 +33,15 @@ public class Profile {
 
     public Profile(){
         super();
+    }
+
+    public Profile(Account account, String profileName, byte[] image, String website, String bio, String status) {
+        this.account = account;
+        this.profileName = profileName;
+        this.image = image;
+        this.website = website;
+        this.bio = bio;
+        this.status = status;
     }
 
     public Profile(Account account, String profileName, String website, String bio, String status) {
@@ -88,11 +100,19 @@ public class Profile {
         this.status = status;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Profile{" +
                 "profileId=" + profileId +
-                ", account=" + account +
+                ", account=" + account + "\n"+
                 ", profileName='" + profileName + '\'' +
                 ", website='" + website + '\'' +
                 ", bio='" + bio + '\'' +

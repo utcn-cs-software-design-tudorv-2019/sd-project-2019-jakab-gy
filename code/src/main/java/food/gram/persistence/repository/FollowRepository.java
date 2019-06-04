@@ -1,11 +1,13 @@
-package food.gram.repository;
+package food.gram.persistence.repository;
 
-import food.gram.entity.Follow;
-import food.gram.entity.Profile;
+import food.gram.persistence.entity.Follow;
+import food.gram.persistence.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface FollowRepository extends JpaRepository<Follow,Integer> {
 
     public Follow findByFollowId(int followId);

@@ -1,7 +1,6 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity

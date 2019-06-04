@@ -1,11 +1,11 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post implements Comparable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +19,7 @@ public class Post {
     @Column(name = "post_time",nullable = false)
     private Timestamp postTime;
 
-    @Column(name = "image",length = Integer.MAX_VALUE, nullable = false)
+    @Column(name = "image",length = Integer.MAX_VALUE)
     private byte[] image;
 
     @Column(name = "location",length = 100)
@@ -97,5 +97,11 @@ public class Post {
                 ", location='" + location + '\'' +
                 ", hashtags='" + hashtags + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Post other = (Post)o;
+        return postTime.compareTo(other.getPostTime());
     }
 }

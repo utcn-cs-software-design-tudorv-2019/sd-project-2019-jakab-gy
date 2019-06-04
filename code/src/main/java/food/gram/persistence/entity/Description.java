@@ -1,4 +1,4 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
 
@@ -15,16 +15,16 @@ public class Description {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @Column(name = "ingredients",length = Integer.MAX_VALUE)
+    @Column(name = "ingredients",length = 10485760)
     private String ingredients;
 
-    @Column(name = "directions",length = Integer.MAX_VALUE)
+    @Column(name = "directions",length = 10485760)
     private String directions;
 
-    @Column(name = "footnotes",length = Integer.MAX_VALUE)
+    @Column(name = "footnotes",length = 10485760)
     private String footnotes;
 
-    @Column(name = "nutritional_facts",length = Integer.MAX_VALUE)
+    @Column(name = "nutritional_facts",length = 10485760)
     private String nutritionalFacts;
 
     public Description(){

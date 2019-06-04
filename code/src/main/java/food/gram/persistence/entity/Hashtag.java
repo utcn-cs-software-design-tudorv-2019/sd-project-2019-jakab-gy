@@ -1,4 +1,4 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
 

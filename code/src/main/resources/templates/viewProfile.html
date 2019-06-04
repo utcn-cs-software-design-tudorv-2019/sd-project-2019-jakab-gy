@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>FoodGram</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/DarkTheme.css}"/>
+</head>
+<body>
+<th:block th:include="profileMenu"></th:block>
+<div class="form-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${profile}" method="POST">
+        <img src="https://26degreessoftware.com/wp-content/uploads/2017/12/login-icon.png" style="width: 100px; height: 100px; border-radius: 50%;">
+        <label>Posts</label><label th:value="${profile.getProfileName()}"></label>&nbsp;
+        <label>Followers</label>&nbsp;
+        <label>Following</label>&nbsp;
+        <br/>
+
+        <table>
+            <tbody>
+            <tr th:each="post : ${ listPost }">
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>

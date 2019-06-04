@@ -1,11 +1,12 @@
-package food.gram.entity;
+package food.gram.persistence.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message")
-public class Message {
+public class Message implements Comparable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -81,10 +82,16 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "messageId=" + messageId +
-                ", senderProfile=" + senderProfile +
-                ", receiverProfile=" + receiverProfile +
+                ", senderProfile=" + senderProfile + "\n" +
+                ", receiverProfile=" + receiverProfile + "\n" +
                 ", description='" + description + '\'' +
                 ", sendingTime=" + sendingTime +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Message other = (Message)o;
+        return sendingTime.compareTo(other.getSendingTime());
     }
 }
