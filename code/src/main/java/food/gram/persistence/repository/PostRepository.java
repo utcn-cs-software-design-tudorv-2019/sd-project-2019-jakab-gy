@@ -13,5 +13,6 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     public Post findByPostId(int postId);
     public List<Post> findAllByProfile(Profile profile);
     public List<Post> findAllByPostTimeIsBetween(Timestamp start,Timestamp end);
+    public List<Post> findAllByProfileAndPostTimeIsBetween(Profile profile,Timestamp start,Timestamp end);
     public List<Post> findAllByLocation(String location);
 }

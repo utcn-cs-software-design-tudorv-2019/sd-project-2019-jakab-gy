@@ -1,10 +1,12 @@
 package food.gram.business;
 
 import food.gram.persistence.entity.*;
+import food.gram.persistence.repository.CommentaryRepository;
 import food.gram.persistence.repository.DescriptionRepository;
 import food.gram.persistence.repository.FollowRepository;
 import food.gram.persistence.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import sun.security.krb5.internal.crypto.Des;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
@@ -25,47 +27,84 @@ public class PostService {
     HashtagService hashtagService;
 
     @Inject
-    FollowRepository followRepository;
+    FollowService followService;
 
-    public Post viewLastPost(Profile profile){
-        List<Post> posts = postRepository.findAllByProfile(profile);
-        Collections.sort(posts);
-        return posts.get(posts.size() - 1);
+    @Inject
+    CommentaryRepository commentaryRepository;
+
+    /**View All Recent Posts*/
+    public List<Post> viewAllRecentPosts(){
+        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp currentDayStart = generateTodayStart();
+
+        return postRepository.findAllByPostTimeIsBetween(currentDayStart,currentMoment);
     }
 
+    /**View All posts for a specific profile*/
     public List<Post> viewAllPosts(Profile profile){
-        List<Post> posts = postRepository.findAllByProfile(profile);
-        Collections.sort(posts);
-        return posts;
+        return postRepository.findAllByProfile(profile);
     }
 
-    public void createPost(Profile profile,byte[] image,String location, String hashtags,Description description){
-        Post post = new Post(profile, Timestamp.valueOf(LocalDateTime.now()), image, location, hashtags);
+    /**View All Recent Posts of followed profiles*/
+    public List<Post> viewAllRecentFollowedPosts(Profile profile){
+        List<Profile> followed = followService.viewAllFollowedProfiles(profile);
+        if(followed == null) return null;
+
+        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp currentDayStart = generateTodayStart();
+
+        List<Post> recentPosts = new ArrayList<>();
+        followed.forEach(p -> {
+            List<Post> posts = postRepository.findAllByProfileAndPostTimeIsBetween(p,currentDayStart,currentMoment);
+            recentPosts.addAll(posts);
+        });
+
+        return recentPosts;
+    }
+
+    /**Create post*/
+    public void createPost(Post post, Profile profile, Description description){
+        post.setProfile(profile);
+        post.setPostTime(Timestamp.valueOf(LocalDateTime.now()));
+        hashtagService.analiseHashtags(post.getHashtags());
+
         post = postRepository.save(post);
 
         description.setPost(post);
         descriptionRepository.save(description);
-
-        hashtagService.analiseHashtags(hashtags);
     }
 
-    public List<Profile> viewFollower(Profile profile){
-        List<Follow> followers = followRepository.findAllByFollowedProfile(profile);
-        List<Profile> profiles = new ArrayList<>();
-
-        followers.forEach(f->{
-            profiles.add(f.getFollowerProfile());
-        });
-        return profiles;
+    /**Update post*/
+    public void updatePost(Post post,Description description){
+        postRepository.save(post);
+        descriptionRepository.save(description);
     }
 
-    public List<Profile> viewFollowed(Profile profile){
-        List<Follow> followed = followRepository.findAllByFollowerProfile(profile);
-        List<Profile> profiles = new ArrayList<>();
+    /**Delete post - delete all related objects - description + comments*/
+    public void deletePost(Post post){
+        Description description = descriptionRepository.findByPost(post);
+        descriptionRepository.delete(description);
 
-        followed.forEach(f->{
-            profiles.add(f.getFollowedProfile());
-        });
-        return profiles;
+        List<Commentary> comments = commentaryRepository.findAllByPost(post);
+        comments.forEach(c -> commentaryRepository.delete(c));
+
+        postRepository.delete(post);
     }
+
+    /**Delete All post of profile*/
+    public void deleteAllPosts(Profile profile){
+        List<Post> posts = postRepository.findAllByProfile(profile);
+        posts.forEach(p -> deletePost(p));
+    }
+
+    private Timestamp generateTodayStart(){
+        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
+        int year = currentMoment.getYear();
+        int month = currentMoment.getMonth();
+        int day = currentMoment.getDay();
+
+        return Timestamp.valueOf(year + "-" + month + "-" + day + "00:00:00");
+    }
+
+
 }

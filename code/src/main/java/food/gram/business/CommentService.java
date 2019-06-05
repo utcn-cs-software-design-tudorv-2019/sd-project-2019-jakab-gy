@@ -14,16 +14,40 @@ public class CommentService {
     @Inject
     CommentaryRepository commentaryRepository;
 
-    public void createComment(Post post, Profile profile, String text){
-        Commentary comment = new Commentary(post,profile,text, Timestamp.valueOf(LocalDateTime.now()));
-        commentaryRepository.save(comment);
+    /**Create comment*/
+    public void createComment(Post post, Profile profile, Commentary commentary){
+        commentary.setProfile(profile);
+        commentary.setPost(post);
+        commentary.setCommentaryTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        commentaryRepository.save(commentary);
     }
 
-    public void deleteComment(Commentary comment){
-        commentaryRepository.delete(comment);
+    /**Delete comment*/
+    public void deleteComment(Commentary commentary){
+        commentaryRepository.delete(commentary);
     }
 
-    public List<Commentary> listAllComments(Post post){
+    /**View All comments*/
+    public List<Commentary> viewAllComments(Post post){
         return commentaryRepository.findAllByPost(post);
+    }
+
+    /**View number of comments*/
+    public long viewNumberOfComments(Post post){
+        List<Commentary> comments = commentaryRepository.findAllByPost(post);
+        if(comments == null) return 0;
+        return comments.size();
+    }
+
+    /**View recent comments - comments made today*/
+    public List<Commentary> viewRecentComments(Post post){
+        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
+        int year = currentMoment.getYear();
+        int month = currentMoment.getMonth();
+        int day = currentMoment.getDay();
+
+        Timestamp currentDatStart = Timestamp.valueOf(year + "-" + month + "-" + day + "00:00:00");
+        return commentaryRepository.findAllByCommentaryTimeIsBetween(currentDatStart,currentMoment);
     }
 }
