@@ -42,12 +42,27 @@ public class CommentService {
 
     /**View recent comments - comments made today*/
     public List<Commentary> viewRecentComments(Post post){
-        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
-        int year = currentMoment.getYear();
-        int month = currentMoment.getMonth();
-        int day = currentMoment.getDay();
+        LocalDateTime today = LocalDateTime.now();
 
-        Timestamp currentDatStart = Timestamp.valueOf(year + "-" + month + "-" + day + "00:00:00");
-        return commentaryRepository.findAllByCommentaryTimeIsBetween(currentDatStart,currentMoment);
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(year);
+
+        sb.append("-");
+        if(month < 9)sb.append("0");
+        sb.append(month);
+
+        sb.append("-");
+        if(day < 9) sb.append("0");
+        sb.append(day);
+
+        sb.append(" 00:00:00");
+        System.out.println(sb);
+        Timestamp currentDayStart = Timestamp.valueOf(sb.toString());
+        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
+        return commentaryRepository.findAllByCommentaryTimeIsBetween(currentDayStart,currentMoment);
     }
 }

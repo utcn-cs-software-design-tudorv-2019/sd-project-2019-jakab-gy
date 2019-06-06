@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,11 +34,20 @@ public class PostService {
     CommentaryRepository commentaryRepository;
 
     /**View All Recent Posts*/
-    public List<Post> viewAllRecentPosts(){
+    public List<Post> viewAllRecentPosts(Profile profile){
         Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
         Timestamp currentDayStart = generateTodayStart();
 
-        return postRepository.findAllByPostTimeIsBetween(currentDayStart,currentMoment);
+        List<Post> posts = postRepository.findAllByPostTimeIsBetween(currentDayStart,currentMoment);
+        List<Post> recentPosts = new ArrayList<>();
+
+        posts.forEach(p -> {
+            if(p.getProfile().getProfileId() != profile.getProfileId() && p.getProfile().getStatus().equals("PUBLIC"))
+                recentPosts.add(p);
+        });
+
+        Collections.sort(recentPosts);
+        return recentPosts;
     }
 
     /**View All posts for a specific profile*/
@@ -58,6 +68,11 @@ public class PostService {
             List<Post> posts = postRepository.findAllByProfileAndPostTimeIsBetween(p,currentDayStart,currentMoment);
             recentPosts.addAll(posts);
         });
+
+        List<Post> personalPosts = postRepository.findAllByProfileAndPostTimeIsBetween(profile,currentDayStart,currentMoment);
+        recentPosts.addAll(personalPosts);
+
+        Collections.sort(recentPosts);
 
         return recentPosts;
     }
@@ -98,12 +113,26 @@ public class PostService {
     }
 
     private Timestamp generateTodayStart(){
-        Timestamp currentMoment = Timestamp.valueOf(LocalDateTime.now());
-        int year = currentMoment.getYear();
-        int month = currentMoment.getMonth();
-        int day = currentMoment.getDay();
+        LocalDateTime today = LocalDateTime.now();
 
-        return Timestamp.valueOf(year + "-" + month + "-" + day + "00:00:00");
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(year);
+
+        sb.append("-");
+        if(month < 9)sb.append("0");
+        sb.append(month);
+
+        sb.append("-");
+        if(day < 9) sb.append("0");
+        sb.append(day);
+
+        sb.append(" 00:00:00");
+        System.out.println(sb);
+        return Timestamp.valueOf(sb.toString());
     }
 
 

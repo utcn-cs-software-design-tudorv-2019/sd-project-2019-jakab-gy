@@ -17,6 +17,7 @@ public class AccountService {
     @Inject
     ProfileRepository profileRepository;
 
+    /**Create account and attached profile*/
     public Profile processSignUp(Account account){
         account = accountRepository.save(account);
         Profile profile = new Profile(account,account.getAccountName(),"","","PUBLIC");
@@ -24,6 +25,7 @@ public class AccountService {
         return profile;
     }
 
+    /**Login to application*/
     public Profile processLogIn(Account account){
         Account found = null;
         found = accountRepository.findByAccountNameAndAccountPassword(account.getAccountName(), account.getAccountPassword());

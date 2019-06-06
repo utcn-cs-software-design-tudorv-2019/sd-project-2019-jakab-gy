@@ -15,6 +15,7 @@ public interface MessageRepository extends JpaRepository<Message,Integer> {
     public List<Message> findAllBySenderProfile(Profile senderProfile);
     public List<Message> findAllByReceiverProfile(Profile receiverProfile);
     public List<Message> findAllBySenderProfileAndReceiverProfile(Profile senderProfile, Profile receiverProfile);
+    public List<Message> findAllBySenderProfileOrReceiverProfile(Profile senderProfile, Profile receiverProfile);
     public List<Message> findAllBySendingTimeIsBetween(Timestamp start,Timestamp end);
 
 }

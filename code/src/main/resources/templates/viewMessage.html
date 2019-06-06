@@ -8,5 +8,55 @@
 <body>
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${newMessage}" method="POST">
+        <input type="hidden" th:object="${receiverProfile}" th:field="${receiverProfile.account}" readonly/>
+        <input type="hidden" th:object="${receiverProfile}" th:field="${receiverProfile.profileName}" readonly/>
+        <input type="hidden" th:object="${receiverProfile}" th:field="${receiverProfile.profileId}" readonly/>
+
+        <table>
+            <tbody>
+            <td>
+                <h3>Chats</h3>
+                <hr/>
+
+                <input th:type="text" name="receiverName" style="width: 250px"/>
+                <input th:type="submit" name="action" value="Search"/>
+                <hr/>
+
+                <table>
+                    <tbody>
+                    <tr th:each="profile : ${conversation}">
+                        <td>
+                            <img th:src="${profile.getImage()}" width="30" height="30"/>
+                        </td>
+                        <td th:text="${profile.getProfileName()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <img th:src="${ receiverProfile.image}" width="40" height="40"/>
+                <h4><label th:text="${ receiverProfile.profileName}"/> <br/></h4>
+
+                <hr/>
+
+                <input th:type="text" th:field="${newMessage.description}" style="width: 300px; height: 40px"/>
+                <input th:type="submit" name="action" value="Send" style="height: 60px"/>
+
+                <hr/>
+                <table>
+                    <tbody>
+                    <tr th:each="message : ${messages}">
+                        <td>
+                            <img th:src="${ message.getSenderProfile().getImage()}" width="30" height="30"/>
+                        </td>
+                        <td th:text="${message.getDescription()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            </tbody>
+        </table>
+    </form>
 </div>
 </body>

@@ -8,5 +8,20 @@
 <body>
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${postList}" method="POST">
+        <table>
+            <tbody>
+            <tr th:each="post : ${postList}">
+                <td>
+                    <img th:src="${ post.getProfile().getImage()}" width="30" height="30"/>
+                    <h4><label th:text="${ post.getProfile().getProfileName()}"/></h4>
+                    <h4><label th:text="${ post.getLocation()}"/></h4>
+                    <img th:src="${post.getImage()}"/>
+                    <img src="https://www.linkfluence.com/hubfs/Instafood-e1516962966798-900x720-cropped.jpg" width="60%" height="60%"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 </div>
 </body>

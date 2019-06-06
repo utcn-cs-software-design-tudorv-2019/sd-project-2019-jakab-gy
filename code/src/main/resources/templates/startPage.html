@@ -7,27 +7,27 @@
 </head>
 
 <body>
-            <div class="login-container" xmlns:th="http://www.thymeleaf.org">
-                <form th:object="${account}" method="POST">
+<div class="login-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${account}" method="POST">
 
-                    <h2>FoodGram</h2><br/>
+        <h2>FoodGram</h2><br/>
 
-                    <label>Username</label><br/>
-                    <input type="text" th:field="*{accountName}" pattern="[A-Za-z0-9_]+" {15}/>
-                    <br/><br/>
+        <label>Username</label><br/>
+        <input type="text" th:field="*{accountName}" pattern="[A-Za-z0-9_]+" {15}/>
+        <br/><br/>
 
-                    <label>Email Address</label><br/>
-                    <input type="email" th:field="*{accountEmail}"{30}/>
-                    <br/><br/>
+        <label>Email Address</label><br/>
+        <input type="email" th:field="*{accountEmail}"{30}/>
+        <br/><br/>
 
-                    <label>Password</label><br/>
-                    <input type="password" th:field="*{accountPassword}" pattern="[A-Za-z0-9_+!?~&$@]+" {15}/>
-                    <br/><br/>
+        <label>Password</label><br/>
+        <input type="password" th:field="*{accountPassword}" pattern="[A-Za-z0-9_+!?~&$@]+" {15}/>
+        <br/><br/>
 
-                    <input type="submit" name="action" value="SignUp"/><br/><br/>
-                    <input type="submit" name="action" value="Login"/><br/><br/>
-                </form>
-            </div>
+        <input type="submit" name="action" value="SignUp"/><br/><br/>
+        <input type="submit" name="action" value="Login"/><br/><br/>
+    </form>
+</div>
 
 </body>
 </html>

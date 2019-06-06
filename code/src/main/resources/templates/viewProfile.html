@@ -9,15 +9,45 @@
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
     <form th:object="${profile}" method="POST">
-        <img src="https://26degreessoftware.com/wp-content/uploads/2017/12/login-icon.png" style="width: 100px; height: 100px; border-radius: 50%;">
-        <label>Posts</label><label th:value="${profile.getProfileName()}"></label>&nbsp;
-        <label>Followers</label>&nbsp;
-        <label>Following</label>&nbsp;
-        <br/>
+        <h4><label th:text="${ profile.getProfileName()}"/></h4>
+        <hr/>
 
         <table>
             <tbody>
-            <tr th:each="post : ${ listPost }">
+            <tr>
+                <td>
+                    <img th:src="${profile.getImage()}" width="50" height="50"/>
+                </td>
+                <td>
+                    <h4><label th:text="Posts"/></h4>
+                    <h4><label th:text="${postNumber}"/></h4>
+                </td>
+                <td>
+                    <h4><label th:text="Followers"/></h4>
+                    <h4><label th:text="${followerNumber}"/></h4>
+                </td>
+                <td>
+                    <h4><label th:text="Following"/></h4>
+                    <h4><label th:text="${followedNumber}"/></h4>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <input type="submit" name="action" value="Edit Profile"/>
+
+        <hr/>
+
+        <table>
+            <tbody>
+            <tr th:each="post : ${postList}">
+                <td>
+                    <img th:src="${ post.getProfile().getImage()}" width="30" height="30"/>
+                    <h4><label th:text="${ post.getProfile().getProfileName()}"/></h4>
+                    <h4><label th:text="${ post.getLocation()}"/></h4>
+                    <img th:src="${post.getImage()}" width="60%" height="60%"/>
+                    <img src="https://www.linkfluence.com/hubfs/Instafood-e1516962966798-900x720-cropped.jpg" width="60%" height="60%"/>
+                </td>
             </tr>
             </tbody>
         </table>

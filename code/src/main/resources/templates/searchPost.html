@@ -8,5 +8,23 @@
 <body>
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${postList}" method="POST">
+        <input th:type="text" name="searchInfo" style="width: 400px"/>
+        <input th:type="submit" name="action" value="Search"/><br/>
+        <hr/>
+
+        <table>
+            <tbody>
+            <tr th:each="post : ${postList}">
+                <td>
+                    <img th:src="${ post.getProfile().getImage()}" width="30" height="30"/>
+                    <h4><label th:text="${ post.getProfile().getProfileName()}"/></h4><br/>
+                    <h4><label th:text="${ post.getLocation()}"/></h4>
+                    <img th:src="${post.getImage()}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 </div>
 </body>

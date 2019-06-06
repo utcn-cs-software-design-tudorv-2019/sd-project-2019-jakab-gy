@@ -119,4 +119,25 @@ public class Profile {
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    public Profile clone(){
+        Profile profile = new Profile();
+        profile.setProfileId(profileId);
+        profile.setProfileName(profileName);
+        profile.setImage(image);
+        profile.setAccount(account);
+        profile.setStatus(status);
+        profile.setBio(bio);
+        profile.setWebsite(website);
+
+        return profile;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Profile)) return false;
+        Profile other = (Profile)obj;
+        if(other.getProfileId() == this.profileId)return true;
+        return false;
+    }
 }

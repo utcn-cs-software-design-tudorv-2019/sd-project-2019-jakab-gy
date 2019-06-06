@@ -9,30 +9,46 @@
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
     <form th:object="${post}" method="POST">
+        <table>
+            <tbody>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                            <input type="file" th:field="${post.image}"/><br/><br/><br/>
 
-        <input type="file" th:field="${post.image}"/><br/>
+                            <label>Location</label><br/><br/>
+                            <input type="text" th:field="${post.location}"  style="width: 200px; height: 50px"/><br/><br/><br/>
 
-        <label>Location</label><br/>
-        <input type="text" th:field="${post.location}"/><br/>
-        <label>Hash Tags</label><br/>
-        <input type="text" th:field="${post.hashtags}"/><br/>
+                            <label>Hash Tags</label><br/><br/>
+                            <input type="text" th:field="${post.hashtags}"  style="width: 200px; height: 200px"/><br/><br/><br/>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                            <label>Ingredients</label><br/>
+                            <input type="text" th:field="${description.ingredients}" style="width: 400px; height: 100px"/><br/>
 
-        <h3>Add description</h3>
-        <hr>
-        <label>Ingredients</label><br/>
-        <input type="text" th:field="${description.ingredients}"/><br/>
+                            <label>Directions</label><br/>
+                            <input type="text" th:field="${description.directions}"  style="width: 400px; height: 100px"/><br/>
 
-        <label>Directions</label><br/>
-        <input type="text" th:field="${description.directions}"/><br/>
+                            <label>Footnotes</label><br/>
+                            <input type="text" th:field="${description.footnotes}"  style="width: 400px; height: 100px"/><br/>
 
-        <label>Footnotes</label><br/>
-        <input type="text" th:field="${description.footnotes}"/><br/>
+                            <label>Nutritional Facts</label><br/>
+                            <input type="text" th:field="${description.nutritionalFacts}"  style="width: 400px; height: 100px"/><br/>
 
-        <label>Nutritional Facts</label><br/>
-        <input type="text" th:field="${description.nutritionalFacts}"/><br/>
-
-        <input type="submit" value="Share"/>
-
+                            <input type="submit" value="Share"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            </tbody>
+        </table>
     </form>
 </div>
 </body>
