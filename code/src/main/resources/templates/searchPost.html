@@ -8,10 +8,23 @@
 <body>
 <th:block th:include="profileMenu"></th:block>
 <div class="form-container" xmlns:th="http://www.thymeleaf.org">
-    <form th:object="${postList}" method="POST">
-        <input th:type="text" name="searchInfo" style="width: 400px"/>
+    <form th:object="${profile}" method="POST">
+        <input th:type="text" th:field="${profile.profileName}" style="width: 400px"/>
         <input th:type="submit" name="action" value="Search"/><br/>
         <hr/>
+
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <input th:type="hidden" th:field="${profile.profileId}" readonly/>
+                    <img th:src="${profile.image}" width="30" height="30"/>
+                    <h4><label th:text="${profile.profileName}"></label></h4>
+                    <input th:type="submit" name="action" value="Follow"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <table>
             <tbody>

@@ -39,8 +39,7 @@ public class AccountController {
         if(profile == null)
             return new ModelAndView("redirect:/");
 
-        ModelAndView mav = new ModelAndView("profileMain");
-        mav.addObject("profile",profile);
+        ModelAndView mav = new ModelAndView("recentPost");
         return mav;
     }
 }

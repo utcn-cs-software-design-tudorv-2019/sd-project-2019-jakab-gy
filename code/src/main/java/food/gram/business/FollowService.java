@@ -5,6 +5,8 @@ import food.gram.persistence.repository.FollowRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,16 @@ public class FollowService {
 
     @Inject
     FollowRepository followRepository;
+
+    /**Create follow*/
+    public void createFollow(Profile profile1, Profile profile2){
+        Follow follow = new Follow();
+        follow.setFollowerProfile(profile1);
+        follow.setFollowedProfile(profile2);
+        follow.setFollowTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        followRepository.save(follow);
+    }
 
     /**View number of follower profiles*/
     public long viewNumberOfFollowers(Profile profile){

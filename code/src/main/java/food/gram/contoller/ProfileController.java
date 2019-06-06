@@ -1,10 +1,7 @@
 package food.gram.contoller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
-import food.gram.business.FollowService;
-import food.gram.business.MessageService;
-import food.gram.business.PostService;
-import food.gram.business.ProfileService;
+import food.gram.business.*;
 import food.gram.persistence.entity.*;
 import food.gram.persistence.repository.AccountRepository;
 import org.springframework.stereotype.Controller;
@@ -34,6 +31,9 @@ public class ProfileController {
     @Inject
     FollowService followService;
 
+    @Inject
+    AccountService accountService;
+
     int profileId = 3;
 
     @RequestMapping(value = "/recentPost", method = RequestMethod.GET)
@@ -58,20 +58,26 @@ public class ProfileController {
         Profile profile = profileService.viewProfile(profileId);
         List<Post> postList = postService.viewAllRecentPosts(profile);
         mav.addObject("postList",postList);
+        mav.addObject("profile", new Profile());
         return mav;
     }
 
     @RequestMapping(value = "/searchPost", method = RequestMethod.POST)
     public ModelAndView processSearchPostAction(@RequestParam(value = "action")String action,
-                                                @RequestParam(value = "searchInfo")String searchInfo){
+                                                @ModelAttribute(value = "profile")Profile profile){
         if(action.equals("Search")){
-            List<Profile> profiles = profileService.viewAllThatMatchName(searchInfo);
+            List<Profile> profiles = profileService.viewAllThatMatchName(profile.getProfileName());
             if(profiles == null || profiles.isEmpty()) return new ModelAndView("redirect:/profile/searchPost");
 
             List<Post> postList = postService.viewAllPosts(profiles.get(0));
             ModelAndView mav = new ModelAndView("searchPost");
             mav.addObject("postList",postList);
+            mav.addObject("profile", profiles.get(0));
             return mav;
+        }
+        if(action.equals("Follow")){
+            Profile profile1 = profileService.viewProfile(profileId);
+            followService.createFollow(profile1,profile);
         }
         return new ModelAndView("redirect:/profile/searchPost");
     }
@@ -117,10 +123,38 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/personalProfile", method = RequestMethod.POST)
-    public ModelAndView processProfileAction(@RequestParam(value = "action")String action,
-                                             @ModelAttribute(value = "profile")Profile profile,
+    public ModelAndView processProfileAction(@ModelAttribute(value = "profile")Profile profile,
                                              @ModelAttribute(value = "account")Account account){
-        return new ModelAndView();
+
+        profile = profileService.viewProfile(profileId);
+        account = profile.getAccount();
+
+        ModelAndView mav = new ModelAndView("updateProfile");
+        mav.addObject("profile",profile);
+        mav.addObject("account",account);
+        return mav;
+    }
+
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.GET)
+    public ModelAndView updateProfile(@ModelAttribute(value = "account")Account account,
+                                      @ModelAttribute(value = "profile")Profile profile){
+        System.out.println("UPDATE");
+        System.out.println(profile);
+        System.out.println(account);
+
+        ModelAndView mav = new ModelAndView("updateProfile");
+        mav.addObject("profile",profile);
+        mav.addObject("account",account);
+        return mav;
+    }
+
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    public ModelAndView processProfileUpdate(@ModelAttribute(value = "account")Account account,
+                                             @ModelAttribute(value = "profile")Profile profile){
+        account = accountService.updateAccount(account);
+        profile.setAccount(account);
+        profileService.updateProfile(profile);
+        return new ModelAndView("redirect:/profile/personalProfile");
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)

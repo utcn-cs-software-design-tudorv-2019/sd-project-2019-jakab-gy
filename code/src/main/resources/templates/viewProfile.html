@@ -31,10 +31,14 @@
                     <h4><label th:text="${followedNumber}"/></h4>
                 </td>
             </tr>
+            <tr>
+                <h3><label th:text="${profile.getBio()}"/></h3><br/>
+                <h3><label th:text="${profile.getWebsite()}"/></h3>
+            </tr>
             </tbody>
         </table>
 
-        <input type="submit" name="action" value="Edit Profile"/>
+        <input type="submit" value="Edit Profile"/>
 
         <hr/>
 

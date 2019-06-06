@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>FoodGram</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/DarkTheme.css}"/>
+</head>
+<body>
+<th:block th:include="profileMenu"></th:block>
+<div class="form-container" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${profile}" method="POST">
+        <h3>Profile Information</h3><br/>
+        <hr/>
+
+        <input type="hidden" th:field="*{profileId}" readonly/>
+
+        <label>Profile Name</label>
+        <input type="text" th:field="*{profileName}" pattern="[A-Za-z0-9_]+" {15}/>
+        <br/><br/>
+
+        <input type="file" th:field="*{image}"/>
+        <br/><br/>
+
+        <label>Bio</label>
+        <input type="text" th:field="*{bio}" pattern="[A-Za-z0-9_]+" {200}/>
+        <br/><br/>
+
+        <label>Website</label>
+        <input type="text" th:field="*{website}" pattern="[A-Za-z0-9_]+" {10}/>
+        <br/><br/>
+
+        <hr/>
+        <h3>Account Information</h3><br/>
+        <hr/>
+
+        <input type="hidden" th:field="*{account.accountId}" readonly/>
+
+        <label>Username</label><br/>
+        <input type="text" th:field="*{account.accountName}" pattern="[A-Za-z0-9_]+" {15}/>
+        <br/><br/>
+
+        <label>Email Address</label><br/>
+        <input type="email" th:field="*{account.accountEmail}"{30}/>
+        <br/><br/>
+
+        <label>Password</label><br/>
+        <input type="password" th:field="*{account.accountPassword}" pattern="[A-Za-z0-9_+!?~&$@]+" {15}/>
+        <br/><br/>
+
+        <input type="submit" value="Update"/><br/><br/>
+    </form>
+</div>
+</body>

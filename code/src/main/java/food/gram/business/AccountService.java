@@ -17,6 +17,11 @@ public class AccountService {
     @Inject
     ProfileRepository profileRepository;
 
+    /**Update account operation*/
+    public Account updateAccount(Account account){
+        return accountRepository.save(account);
+    }
+
     /**Create account and attached profile*/
     public Profile processSignUp(Account account){
         account = accountRepository.save(account);
